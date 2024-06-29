@@ -4,6 +4,7 @@ import colors from 'tailwindcss/colors'
 import { api } from '@/data/api'
 import { Product } from '@/data/types/product'
 import { env } from '@/env'
+import Image from 'next/image'
 
 export const runtime = 'edge'
 
@@ -19,7 +20,7 @@ export const contentType = 'image/png'
 async function getProduct(slug: string): Promise<Product> {
   const response = await api(`/products/${slug}`, {
     next: {
-      revalidate: 60 * 15, // 15 minutes
+      revalidate: 60, // 1 minutes
     },
   })
 
@@ -48,7 +49,15 @@ export default async function OgImage({
           flexDirection: 'column',
         }}
       >
-        <img src={productImageURL} alt="" style={{ width: '100%' }} />
+        <Image
+          src={productImageURL}
+          alt=""
+          width={1920}
+          height={1920}
+          quality={100}
+          priority
+          style={{ width: '100%' }}
+        />
       </div>
     ),
     {
